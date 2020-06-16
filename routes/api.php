@@ -18,6 +18,8 @@ Route::middleware(['auth:api','IsReader'])->get('/user', function (Request $requ
     return response()->json(array('status' => 'success', 'data' => Auth::user()));
 });
 
+Route::get('/login', 'Api\UserController@login');
+
 Route::middleware(['auth:api','IsReader'])->resource('blog', 'Api\BlogController');
 
 Route::middleware(['auth:api','IsWriter'])->resource('blog-manager', 'Api\BlogManagerController');
