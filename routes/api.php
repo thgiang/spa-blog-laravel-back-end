@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:api','IsReader'])->get('/user', function (Request $request) {
+    return response()->json(array('status' => 'success', 'data' => Auth::user()));
 });
+
+Route::middleware(['auth:api','IsReader'])->resource('blog', 'Api\BlogController');
+
+Route::middleware(['auth:api','IsWriter'])->resource('blog-manager', 'Api\BlogManagerController');
+
+Route::middleware(['auth:api','IsAdmin'])->resource('user-manager', 'Api\UserManagerController');
