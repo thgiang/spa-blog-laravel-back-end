@@ -3,23 +3,24 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+/* ******** USER ROUTE ********  */
 
+// Normal user
 Route::post('/auth/login', 'Api\UserController@login');
-
 Route::middleware(['IsLoggedIn'])->get('/auth/user', 'Api\UserController@userInfo');
+Route::middleware(['IsLoggedIn'])->get('/auth/logout', 'Api\UserController@logout');
+
+// Admin
+Route::middleware(['IsLoggedIn','IsAdmin'])->resource('user-manager', 'Api\UserManagerController');
+/* ******** END USER ROUTE ********  */
+
+
+/* ******** CATEGORY ROUTE ********  */
+Route::middleware(['IsLoggedIn'])->get('/category', 'Api\CategoryController@index');
+/* ******** END CATEGORY ROUTE ********  */
+
+/* ******** BLOG ROUTE ********  */
 
 Route::middleware(['IsLoggedIn','IsReader'])->resource('blog', 'Api\BlogController');
-
 Route::middleware(['IsLoggedIn','IsWriter'])->resource('blog-manager', 'Api\BlogManagerController');
-
-Route::middleware(['IsLoggedIn','IsAdmin'])->resource('user-manager', 'Api\UserManagerController');
+/* ******** END BLOG ROUTE ********  */

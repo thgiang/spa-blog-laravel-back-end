@@ -69,7 +69,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'username' => $data['username'],
             'email' => $data['email'],
-            'api_token' => base64_encode(json_encode(array('time' => time(), 'hash' => Str::random(32)))),
+            'api_token' => generateToken(),
             'password' => Hash::make($data['password']),
         ]);
     }

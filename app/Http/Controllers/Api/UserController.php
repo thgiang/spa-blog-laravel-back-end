@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function logout(Request $request) {
+        $user = Auth::user();
+        $user->api_token = generateToken();
+        $user->save();
+        Auth::logout();
+
+        return response()->json(array('status' => 'success', 'data' => []));
+    }
+
     public function login(Request $request) {
         if(!$request->username || !$request->password) {
             return response()->json(array('status' => 'error', 'message' => "username and password are required"));
