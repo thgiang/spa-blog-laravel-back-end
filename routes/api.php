@@ -14,14 +14,12 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::middleware(['auth:api','IsReader'])->get('/user', function (Request $request) {
-    return response()->json(array('status' => 'success', 'data' => Auth::user()));
-});
+Route::post('/auth/login', 'Api\UserController@login');
 
-Route::get('/login', 'Api\UserController@login');
+Route::middleware(['IsLoggedIn'])->get('/auth/user', 'Api\UserController@userInfo');
 
-Route::middleware(['auth:api','IsReader'])->resource('blog', 'Api\BlogController');
+Route::middleware(['IsLoggedIn','IsReader'])->resource('blog', 'Api\BlogController');
 
-Route::middleware(['auth:api','IsWriter'])->resource('blog-manager', 'Api\BlogManagerController');
+Route::middleware(['IsLoggedIn','IsWriter'])->resource('blog-manager', 'Api\BlogManagerController');
 
-Route::middleware(['auth:api','IsAdmin'])->resource('user-manager', 'Api\UserManagerController');
+Route::middleware(['IsLoggedIn','IsAdmin'])->resource('user-manager', 'Api\UserManagerController');
