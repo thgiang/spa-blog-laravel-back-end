@@ -20,7 +20,7 @@ class CreateBlogsTable extends Migration
             $table->string('thumbnail');
             $table->integer('user_id');
             $table->string('description', 500);
-            $table->string('content');
+            $table->text('content');
             $table->timestamps();
         });
     }

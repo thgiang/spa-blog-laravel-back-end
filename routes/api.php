@@ -22,5 +22,7 @@ Route::middleware(['IsLoggedIn'])->get('/category', 'Api\CategoryController@inde
 /* ******** BLOG ROUTE ********  */
 
 Route::middleware(['IsLoggedIn','IsReader'])->resource('blog', 'Api\BlogController');
+Route::middleware(['IsLoggedIn','IsReader'])->get('category/{id}', 'Api\BlogController@getBlogsByCategory');
+Route::get('dummy', 'Api\BlogController@dummy');
 Route::middleware(['IsLoggedIn','IsWriter'])->resource('blog-manager', 'Api\BlogManagerController');
 /* ******** END BLOG ROUTE ********  */
