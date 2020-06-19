@@ -69,4 +69,8 @@ class BlogController extends Controller
 
         return response()->json($blogs);
     }
+
+    public function show($id) {
+        return response()->json(Blog::where('id', $id)->first());
+    }
 }
