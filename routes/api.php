@@ -27,6 +27,7 @@ Route::middleware(['IsLoggedIn','IsWriter'])->resource('blog-manager', 'Api\Blog
 /* ******** ADMIN USER MANAGER ROUTE ********  */
 Route::middleware(['IsLoggedIn', 'IsAdmin'])->get('/user-manager/show/{id}', 'Api\UserManagerController@show');
 Route::middleware(['IsLoggedIn', 'IsAdmin'])->post('/user-manager/save/', 'Api\UserManagerController@save');
+Route::middleware(['IsLoggedIn', 'IsAdmin'])->post('/user-manager/create/', 'Api\UserManagerController@create');
 Route::middleware(['IsLoggedIn', 'IsAdmin'])->get('/user-manager/', 'Api\UserManagerController@index');
 Route::middleware(['IsLoggedIn', 'IsAdmin'])->get('/user-manager/delete/{id}', 'Api\UserManagerController@deleteUser');
 Route::middleware(['IsLoggedIn', 'IsAdmin'])->get('/user-manager/search/', 'Api\UserManagerController@search');

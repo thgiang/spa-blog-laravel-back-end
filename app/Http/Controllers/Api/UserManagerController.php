@@ -61,4 +61,23 @@ class UserManagerController extends Controller
         $user->save();
         return response()->json(array('status' => 'success', 'data' => $user));
     }
+
+    public function create(Request $request) {
+        $requireFields = array('name', 'username', 'email', 'password');
+        foreach($requireFields AS $requireField) {
+            if(!$request->{$requireField}) {
+                return response()->json(array('status' => 'error', 'message' => $requireField.' field is required'));
+            }
+        }
+
+        // Map data from request
+        $user = new User();
+        foreach($requireFields AS $requireField) {
+            $user->{$requireField} = $request->{$requireField};
+        }
+        $user->password = Hash::make($request->password);
+        $user->api_token = generateToken();
+        $user->save();
+        return response()->json(array('status' => 'success', 'data' => $user));
+    }
 }
