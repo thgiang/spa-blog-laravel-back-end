@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\User;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -42,14 +43,27 @@ class UserManagerController extends Controller
     }
 
     public function save(Request $request) {
-        if(!$request->id) {
-            return response()->json(array('status' => 'error', 'message' => 'Wrong request'));
+        // validate incoming request
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|numeric',
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'username' => 'required|string|max:255',
+            'role' => ['required', 'string'],
+        ]);
+        if ($validator->fails()) {
+            $errorString = "<br>";
+            foreach ($validator->errors()->toArray() as $field => $message) {
+                $errorString .= $field .': '.$message[0].'<br>';
+            }
+            return response()->json(['status' => 'error', 'message' => $errorString]);
         }
 
         $user = User::where('id', $request->id)->first();
         if(!$user) {
             return response()->json(array('status' => 'error', 'message' => 'User not found'));
         }
+
 
         // Map data from request
         $user->role = $request->role;
@@ -63,14 +77,24 @@ class UserManagerController extends Controller
     }
 
     public function create(Request $request) {
-        $requireFields = array('name', 'username', 'email', 'password');
-        foreach($requireFields AS $requireField) {
-            if(!$request->{$requireField}) {
-                return response()->json(array('status' => 'error', 'message' => $requireField.' field is required'));
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:191'],
+            'email' => ['required', 'string', 'email', 'max:191', 'unique:users'],
+            'username' => 'required|string|max:191|unique:users',
+            'password' => ['required', 'string', 'min:8'],
+            'role' => ['required', 'string'],
+        ]);
+
+        if ($validator->fails()) {
+            $errorString = "<br>";
+            foreach ($validator->errors()->toArray() as $field => $message) {
+                $errorString .= $field .': '.$message[0].'<br>';
             }
+            return response()->json(['status' => 'error', 'message' => $errorString]);
         }
 
         // Map data from request
+        $requireFields = array('name', 'username', 'email', 'password', 'role');
         $user = new User();
         foreach($requireFields AS $requireField) {
             $user->{$requireField} = $request->{$requireField};

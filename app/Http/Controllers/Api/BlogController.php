@@ -21,7 +21,7 @@ class BlogController extends Controller
             $blog->user_id = 1;
             $blog->cat_id = rand(1, 5);
             $blog->thumbnail = "http://localhost:8000/images/".$images[rand(0, count($images)-1)];
-            $blog->slug = "bai-viet-so-" . ($i + 1);
+            //$blog->slug = "bai-viet-so-" . ($i + 1);
             $blog->description = "Theo hội nghị Digiday Content Marketing vào đầu năm 2016, một trong những khó khăn lớn nhất mà các content marketer đang gặp phải là thiếu hụt về kinh phí. Các chiến dịch content marketing thường khó thu hút kinh phí hơn so với các hình thức marketing khác, vốn thường mang lại lợi nhuận chỉ sau một thời gian ngắn.";
             $content = "";
             for ($x = 0; $x < rand(2, 7); $x++) {
