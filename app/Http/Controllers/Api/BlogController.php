@@ -106,6 +106,9 @@ class BlogController extends Controller
         } else {
             $blogs = Blog::with('category')->orderBy('id', 'DESC')->paginate($perPage);
         }
+        foreach ($blogs as $blog) {
+            $blog->cat_name = $blog->category->name;
+        }
 
         return response()->json($blogs);
     }

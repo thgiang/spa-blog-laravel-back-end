@@ -60,6 +60,24 @@ class BlogManagerController extends Controller
             return response()->json(array('status' => 'error', 'Blog not found'));
         }
         $blog->delete();
+
+        $curl = curl_init();
+
+        /* DELETE INDEX */
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('ESLASTICSEARCH_URL')."/".$blog->getIndexName()."/_doc/".$blog->id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "DELETE",
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        /* DELETE INDEX */
+
         return response()->json(array('status' => 'success', 'Deleted!'));
     }
 }
