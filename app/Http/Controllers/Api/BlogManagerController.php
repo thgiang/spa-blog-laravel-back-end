@@ -36,6 +36,9 @@ class BlogManagerController extends Controller
         $blog = false;
         if(isset($request->id)) {
             $blog = Blog::where('id', $request->id)->first();
+            if(Auth::user()->role == "writer" && $blog->user_id != Auth::user()->id) {
+                return response()->json(['status' => 'error', 'message' => "You dont have permission to edit this blog"]);
+            }
         }
         if(!$blog) {
             $blog = new Blog();

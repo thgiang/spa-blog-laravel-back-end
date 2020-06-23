@@ -20,7 +20,8 @@ Route::middleware(['IsLoggedIn'])->get('/category', 'Api\CategoryController@inde
 
 Route::middleware(['IsLoggedIn','IsReader'])->resource('blog', 'Api\BlogController');
 Route::middleware(['IsLoggedIn','IsReader'])->get('blog-by-category/{id}', 'Api\BlogController@getBlogsByCategory');
-//Route::get('dummy', 'Api\BlogController@dummy');
+Route::get('dummy', 'Api\BlogController@dummy');
+Route::get('search-blog', 'Api\BlogController@search');
 Route::middleware(['IsLoggedIn','IsWriter'])->get('blog-manager', 'Api\BlogManagerController@index');
 Route::middleware(['IsLoggedIn','IsWriter'])->post('blog-manager/save', 'Api\BlogManagerController@save');
 /* ******** END BLOG ROUTE ********  */
