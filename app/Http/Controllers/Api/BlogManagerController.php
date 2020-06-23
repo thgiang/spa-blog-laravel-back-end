@@ -34,7 +34,7 @@ class BlogManagerController extends Controller
 
         // Init new blog or write to the old once
         $blog = false;
-        if(isset($request->id)) {
+        if(isset($request->id) && $request->id > 0) {
             $blog = Blog::where('id', $request->id)->first();
             if(Auth::user()->role == "writer" && $blog->user_id != Auth::user()->id) {
                 return response()->json(['status' => 'error', 'message' => "You dont have permission to edit this blog"]);
@@ -52,5 +52,14 @@ class BlogManagerController extends Controller
         $blog->user_id = Auth::user()->id;
         $blog->save();
         return response()->json(array('status' => 'success', 'data' => $blog));
+    }
+
+    public function delete($id, Request $request) {
+        $blog = Blog::where('id', $id)->first();
+        if(!$blog) {
+            return response()->json(array('status' => 'error', 'Blog not found'));
+        }
+        $blog->delete();
+        return response()->json(array('status' => 'success', 'Deleted!'));
     }
 }
