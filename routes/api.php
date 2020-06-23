@@ -24,9 +24,6 @@ Route::get('search-blog', 'Api\BlogController@search');
 Route::middleware(['IsLoggedIn','IsWriter'])->get('blog-manager', 'Api\BlogManagerController@index');
 Route::middleware(['IsLoggedIn','IsWriter'])->post('blog-manager/save', 'Api\BlogManagerController@save');
 Route::middleware(['IsLoggedIn','IsAdmin'])->get('blog-manager/delete/{id}', 'Api\BlogManagerController@delete');
-
-Route::middleware(['IsLoggedIn'])->get('comment/{blog_id}', 'Api\CommentController@show');
-Route::middleware(['IsLoggedIn'])->post('comment/{blog_id}', 'Api\CommentController@save');
 /* ******** END BLOG ROUTE ********  */
 
 
@@ -37,4 +34,12 @@ Route::middleware(['IsLoggedIn', 'IsAdmin'])->post('/user-manager/create/', 'Api
 Route::middleware(['IsLoggedIn', 'IsAdmin'])->get('/user-manager/', 'Api\UserManagerController@index');
 Route::middleware(['IsLoggedIn', 'IsAdmin'])->get('/user-manager/delete/{id}', 'Api\UserManagerController@deleteUser');
 Route::middleware(['IsLoggedIn', 'IsAdmin'])->get('/user-manager/search/', 'Api\UserManagerController@search');
+/* ******** END CATEGORY ROUTE ********  */
+
+
+/* ******** COMMENT ROUTE ********  */
+Route::middleware(['IsLoggedIn'])->get('comment/{blog_id}', 'Api\CommentController@show');
+Route::middleware(['IsLoggedIn'])->post('comment/{blog_id}', 'Api\CommentController@save');
+Route::middleware(['IsLoggedIn', 'IsAdmin'])->get('comment-manager', 'Api\CommentManagerController@index');
+Route::middleware(['IsLoggedIn', 'IsAdmin'])->get('comment-manager/delete/{id}', 'Api\CommentManagerController@delete');
 /* ******** END CATEGORY ROUTE ********  */
